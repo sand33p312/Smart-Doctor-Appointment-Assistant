@@ -9,17 +9,18 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from pydantic import BaseModel
 from typing import List
-from dotenv import load_dotenv
+from dotenv import load_dotenv 
 
 import tools
 from models import Base, Doctor
 
 # ===== SETUP =====
+load_dotenv() 
 
-load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-DATABASE_URL = "postgresql+psycopg2://admin:admin@localhost:5432/doctor_app"
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql+psycopg2://admin:admin@localhost:5432/doctor_app")
+
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base.metadata.create_all(bind=engine)
@@ -35,13 +36,17 @@ AVAILABLE_TOOLS = {
 }
 
 # ===== FASTAPI APP =====
-
-VERCEL_FRONTEND_URL = "https://your-vercel-app-name.vercel.app"
+# Placeholder for your deployed frontend URL
+VERCEL_FRONTEND_URL = "https://your-vercel-app-name.vercel.app" 
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", VERCEL_FRONTEND_URL],
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173",
+        VERCEL_FRONTEND_URL # Added for deployment
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -167,8 +172,6 @@ async def chat(request: Request):
     except Exception as e:
         print("An error occurred in /chat:")
         traceback.print_exc()
-        # === NEW: Better error handling for rate limits ===
         if "ResourceExhausted" in str(e):
              return {"reply": "I'm experiencing high traffic right now. Please wait a minute and try again."}
-        # === END OF NEW HANDLING ===
         return {"reply": f"An unexpected server error occurred."}
