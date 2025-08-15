@@ -1,0 +1,97 @@
+{
+  "mcp_version": "0.1",
+  "tools": [
+    {
+      "function_declarations": [
+        {
+          "name": "get_doctor_schedule",
+          "description": "Use this tool to get the complete, unfiltered list of available appointment slots for a specific doctor on a given day. The AI should then filter this list to answer the user's specific query (e.g., for afternoon times).",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "doctor_name": {
+                "type": "STRING",
+                "description": "The name of the doctor, e.g., 'Dr. Ahuja' or 'Ahuja'."
+              },
+              "date": {
+                "type": "STRING",
+                "description": "The desired date. This can be a natural language string like 'tomorrow', 'next Friday', or 'August 17'. The tool can parse this automatically."
+              }
+            },
+            "required": ["doctor_name", "date"]
+          }
+        },
+        {
+            "name": "book_appointment",
+            "description": "Schedules a new appointment. If the user says 'any doctor', use 'any' for the doctor_name. The function requires the patient's email address.",
+            "parameters": {
+                "type": "OBJECT",
+                "properties": {
+                    "doctor_name": {
+                        "type": "STRING",
+                        "description": "The name of the doctor, or 'any' to find an available one."
+                    },
+                    "patient_email": {
+                        "type": "STRING",
+                        "description": "The patient's email address to send confirmation to."
+                    },
+                    "date": {
+                        "type": "STRING",
+                        "description": "The date of the appointment. Can be natural language like 'today' or 'Aug 15'."
+                    },
+                    "time": {
+                        "type": "STRING",
+                        "description": "The time of the appointment in 24-hour or 12-hour format, e.g., '15:00' or '3 PM'."
+                    },
+                    "symptoms": {
+                        "type": "STRING",
+                        "description": "Optional. The symptoms the patient is experiencing. This will be saved for new patients."
+                    }
+                },
+                "required": ["doctor_name", "patient_email", "date", "time"]
+            }
+        },
+        {
+            "name": "get_appointment_summary",
+            "description": "Generates a summary report for a doctor. Can query by timeframes like 'today' or 'yesterday', or by any patient symptom. Can optionally be filtered by a specific doctor's name.",
+            "parameters": {
+                "type": "OBJECT",
+                "properties": {
+                    "query": {
+                        "type": "STRING",
+                        "description": "The summary to get. This can be a timeframe like 'today' or a specific symptom like 'cough'."
+                    },
+                    "doctor_name": {
+                        "type": "STRING",
+                        "description": "Optional. The name of the doctor for whom the summary is requested."
+                    }
+                },
+                "required": ["query"]
+            }
+        },
+        {
+          "name": "list_all_doctors",
+          "description": "Provides a list of all doctors available in the system.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {}
+          }
+        },
+        {
+          "name": "find_doctor_by_symptom",
+          "description": "Use this tool first to determine the correct type of doctor (specialization) based on a user's reported symptoms.",
+          "parameters": {
+            "type": "OBJECT",
+            "properties": {
+              "symptom": {
+                "type": "STRING",
+                "description": "The symptom the user is experiencing, e.g., 'fever', 'chest pain'."
+              }
+            },
+            "required": ["symptom"]
+          }
+        }
+      ]
+    }
+  ]
+}
