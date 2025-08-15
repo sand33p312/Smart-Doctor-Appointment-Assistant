@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://your-render-backend.onrender.com";
+const API_BASE_URL = "https://smart-doctor-appointment-assistant.onrender.com";
 
 import { useState, useEffect } from "react";
 import "./App.css";

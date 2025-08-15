@@ -37,7 +37,7 @@ AVAILABLE_TOOLS = {
 
 # ===== FASTAPI APP =====
 # Placeholder for your deployed frontend URL
-VERCEL_FRONTEND_URL = "https://your-vercel-app-name.vercel.app" 
+VERCEL_FRONTEND_URL = "https://smart-doctor-appointment-assistant.vercel.app" 
 
 app = FastAPI()
 app.add_middleware(
