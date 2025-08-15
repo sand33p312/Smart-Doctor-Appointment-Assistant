@@ -1,3 +1,5 @@
+const API_BASE_URL = "https://your-render-backend.onrender.com";
+
 import { useState, useEffect } from "react";
 import "./App.css";
 
@@ -32,7 +34,7 @@ function App() {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/doctors");
+        const res = await fetch(`${API_BASE_URL}/doctors`);
         if (!res.ok) throw new Error("Failed to fetch doctors list");
         const data = await res.json();
         setDoctors(data);
@@ -53,7 +55,7 @@ function App() {
     setResponse(""); 
     setDashboardReport("");
     try {
-      const res = await fetch("http://127.0.0.1:8000/chat", {
+      const res = await fetch(`${API_BASE_URL}/chat`,  {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: prompt, session_id: sessionId }),
@@ -101,7 +103,7 @@ function App() {
     };
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/book", {
+      const res = await fetch(`${API_BASE_URL}/book`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bookingDetails),
